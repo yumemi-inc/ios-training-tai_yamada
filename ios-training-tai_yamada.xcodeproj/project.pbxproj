@@ -205,6 +205,9 @@
 			);
 			mainGroup = 3DD853C22E9DFD67001A98C6;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3DD854102E9E1A72001A98C6 /* XCRemoteSwiftPackageReference "ios-training" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3DD853CC2E9DFD67001A98C6 /* Products */;
 			projectDirPath = "";
@@ -623,6 +626,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3DD854102E9E1A72001A98C6 /* XCRemoteSwiftPackageReference "ios-training" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yumemi-inc/ios-training.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 3DD853C32E9DFD67001A98C6 /* Project object */;
 }
