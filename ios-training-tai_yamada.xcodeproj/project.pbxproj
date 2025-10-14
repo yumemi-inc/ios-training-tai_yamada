@@ -31,7 +31,6 @@
 		3DD853CB2E9DFD67001A98C6 /* ios-training-tai_yamada.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-training-tai_yamada.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DD853D82E9DFD68001A98C6 /* ios-training-tai_yamadaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-training-tai_yamadaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DD853E22E9DFD68001A98C6 /* ios-training-tai_yamadaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-training-tai_yamadaUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3DD854022E9E0EDE001A98C6 /* simulator_screenshot_790488B9-1C41-4720-867E-44CD11B14BA6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "simulator_screenshot_790488B9-1C41-4720-867E-44CD11B14BA6.png"; path = "../../../../var/folders/xg/5w1_jm8558b1wypzlxkyh81w0000gp/T/simulator_screenshot_790488B9-1C41-4720-867E-44CD11B14BA6.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -84,7 +83,6 @@
 				3DD853CD2E9DFD67001A98C6 /* ios-training-tai_yamada */,
 				3DD853DB2E9DFD68001A98C6 /* ios-training-tai_yamadaTests */,
 				3DD853E52E9DFD68001A98C6 /* ios-training-tai_yamadaUITests */,
-				3DD854012E9E0EDE001A98C6 /* Frameworks */,
 				3DD853CC2E9DFD67001A98C6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -97,14 +95,6 @@
 				3DD853E22E9DFD68001A98C6 /* ios-training-tai_yamadaUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		3DD854012E9E0EDE001A98C6 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				3DD854022E9E0EDE001A98C6 /* simulator_screenshot_790488B9-1C41-4720-867E-44CD11B14BA6.png */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
