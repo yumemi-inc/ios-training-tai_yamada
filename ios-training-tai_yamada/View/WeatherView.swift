@@ -24,7 +24,7 @@ struct WeatherView: View {
                 HStack(spacing: 0) {
                     Text("ー ー")
                         .foregroundColor(.blue)
-                        .frame(width: geometry.size.width * 0.25) // 画像の半分
+                        .frame(width: geometry.size.width * 0.25)
                     Text("ー ー")
                         .foregroundColor(.red)
                         .frame(width: geometry.size.width * 0.25)
