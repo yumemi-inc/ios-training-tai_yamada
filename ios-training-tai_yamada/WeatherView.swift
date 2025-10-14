@@ -26,7 +26,7 @@ struct WeatherView: View {
                 }
                 
                 HStack(spacing: 0) {
-                    // ボタンの機能は今後のタスクで実装する
+                    // TODO: ボタンの機能は今後のタスクで実装する
                     Button(action: {}) {
                         Text("Close")
                             .foregroundColor(.blue)
