@@ -10,7 +10,6 @@ import SwiftUI
 struct WeatherView: View {
     @StateObject private var viewModel = WeatherViewModel()
     
-    
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
@@ -39,7 +38,7 @@ struct WeatherView: View {
                         .frame(width: geometry.size.width * 0.25)
                     
                     Button("Reload") {
-                        viewModel.fetchWeather()
+                        viewModel.fetchWeather(for: "tokyo")
                     }
                     .foregroundColor(.blue)
                     .frame(width: geometry.size.width * 0.25)
@@ -51,7 +50,16 @@ struct WeatherView: View {
             .frame(maxHeight: .infinity, alignment: .center) // VStack全体を中央に
         }
         .onAppear {
-            viewModel.fetchWeather()
+            viewModel.fetchWeather(for: "tokyo")
+        }
+        // エラーハンドリング
+        .alert("エラー", isPresented: Binding(
+            get: { viewModel.errorMessage != nil },
+            set: { _ in viewModel.errorMessage = nil }
+        )) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(viewModel.errorMessage ?? "")
         }
     }
     
