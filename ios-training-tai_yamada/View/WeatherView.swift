@@ -8,16 +8,20 @@
 import SwiftUI
 
 struct WeatherView: View {
+    @StateObject private var viewModel = WeatherViewModel()
+    
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                Image("dummy")
+                Image(viewModel.weather)
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(width: geometry.size.width * 0.5) // 幅は画面の半分
                     .frame(height: geometry.size.width * 0.5) // 高さは幅と同じ
                     .frame(maxWidth: .infinity)
-                    .clipped()
+                    .foregroundStyle(imageColor)
 
                 HStack(spacing: 0) {
                     Text("ー ー")
@@ -34,19 +38,32 @@ struct WeatherView: View {
                         .foregroundColor(.blue)
                         .frame(width: geometry.size.width * 0.25)
                     
-                    Text("Reload")
-                        .foregroundColor(.blue)
-                        .frame(width: geometry.size.width * 0.25)
+                    Button("Reload") {
+                        viewModel.fetchWeather()
+                    }
+                    .foregroundColor(.blue)
+                    .frame(width: geometry.size.width * 0.25)
                     
                 }
                 .padding(.top, 80) // Labelとの隙間は80pt
                 
             }
             .frame(maxHeight: .infinity, alignment: .center) // VStack全体を中央に
-            
-
+        }
+        .onAppear {
+            viewModel.fetchWeather()
         }
     }
+    
+    private var imageColor: Color {
+        switch viewModel.weather {
+        case "sunny": return .red
+        case "cloudy": return .gray
+        case "rainy": return .blue
+        default: return .black
+        }
+    }
+    
 }
 
 #Preview {
