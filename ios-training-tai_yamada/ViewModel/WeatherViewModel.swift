@@ -10,7 +10,7 @@ import YumemiWeather
 
 @MainActor
 final class WeatherViewModel: ObservableObject {
-    @Published var weather: String = "unknown"
+    @Published var weather: String = "sunny"
     
     func fetchWeather() {
         weather = YumemiWeather.fetchWeatherCondition()
