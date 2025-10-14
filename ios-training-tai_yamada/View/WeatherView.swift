@@ -17,25 +17,25 @@ struct WeatherView: View {
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: geometry.size.width * 0.5) // 幅は画面の半分
-                    .frame(height: geometry.size.width * 0.5) // 高さは幅と同じ
-                    .frame(maxWidth: .infinity)
+                    .frame(width: geometry.size.width * 0.5, height: geometry.size.width * 0.5)
                     .foregroundStyle(imageColor)
 
                 HStack(spacing: 0) {
                     Text("ー ー")
                         .foregroundColor(.blue)
-                        .frame(width: geometry.size.width * 0.25) // 画像の半分
+                        .frame(width: geometry.size.width * 0.25)
                     Text("ー ー")
                         .foregroundColor(.red)
                         .frame(width: geometry.size.width * 0.25)
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
                 
                 HStack(spacing: 0) {
-                    Text("Close")
-                        .foregroundColor(.blue)
-                        .frame(width: geometry.size.width * 0.25)
+                    // Closeボタンの機能は今後のタスクで実装する
+                    Button(action: {}) {
+                        Text("Close")
+                            .foregroundColor(.blue)
+                            .frame(width: geometry.size.width * 0.25)
+                    }
                     
                     Button("Reload") {
                         viewModel.fetchWeather(for: "tokyo")
@@ -44,15 +44,14 @@ struct WeatherView: View {
                     .frame(width: geometry.size.width * 0.25)
                     
                 }
-                .padding(.top, 80) // Labelとの隙間は80pt
+                .padding(.top, 80)
                 
             }
-            .frame(maxHeight: .infinity, alignment: .center) // VStack全体を中央に
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         }
         .onAppear {
             viewModel.fetchWeather(for: "tokyo")
         }
-        // エラーハンドリング
         .alert("エラー", isPresented: Binding(
             get: { viewModel.errorMessage != nil },
             set: { _ in viewModel.errorMessage = nil }
