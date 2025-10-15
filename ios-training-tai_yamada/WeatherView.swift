@@ -11,7 +11,7 @@ struct WeatherView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                Image("dummy")
+                Image(.dummy)
                     .resizable()
                     .scaledToFit()
                     .frame(width: geometry.size.width * 0.5, height: geometry.size.width * 0.5)
