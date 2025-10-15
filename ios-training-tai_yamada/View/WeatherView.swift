@@ -61,7 +61,6 @@ struct WeatherView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .onAppear {
-            // 今回のタスクではパラメータを tokyo で固定にしています。
             viewModel.fetchWeather(for: "tokyo")
         }
         .alert("エラー", isPresented: Binding(

@@ -6,12 +6,16 @@
 //
 
 import Observation
+
+import SwiftUI
+import Combine
 import YumemiWeather
 
 @MainActor
 @Observable
 final class WeatherViewModel {
     var weather: Weather?
+
     var errorMessage: String?
 
     func fetchWeather(for area: String) {
