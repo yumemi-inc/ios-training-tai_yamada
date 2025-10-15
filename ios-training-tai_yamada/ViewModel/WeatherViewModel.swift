@@ -33,6 +33,7 @@ final class WeatherViewModel: ObservableObject {
             
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
+            decoder.dateDecodingStrategy = .iso8601
             let decoded = try decoder.decode(WeatherResponse.self, from: responseData)
             
             weather = decoded
