@@ -13,7 +13,7 @@ struct WeatherView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                Image(viewModel.weather)
+                Image(viewModel.weather?.weatherCondition ?? "sunny")
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
@@ -21,14 +21,17 @@ struct WeatherView: View {
                     .foregroundStyle(imageColor)
 
                 HStack(spacing: 0) {
-                    Text("ー ー")
+                    Text("\(viewModel.weather?.minTemperature ?? 0)")
                         .foregroundColor(.blue)
+                        .font(.system(size: 35, weight: .light))
                         .frame(width: geometry.size.width * 0.25)
-                    Text("ー ー")
+
+                    Text("\(viewModel.weather?.maxTemperature ?? 0)")
                         .foregroundColor(.red)
+                        .font(.system(size: 35, weight: .light))
                         .frame(width: geometry.size.width * 0.25)
                 }
-                
+
                 HStack(spacing: 0) {
                     // TODO: Closeボタンの機能は今後のタスクで実装する
                     Button(action: {}) {
@@ -65,14 +68,13 @@ struct WeatherView: View {
     }
     
     private var imageColor: Color {
-        switch viewModel.weather {
+        switch viewModel.weather?.weatherCondition {
         case "sunny": return .red
         case "cloudy": return .gray
         case "rainy": return .blue
         default: return .black
         }
     }
-    
 }
 
 #Preview {
