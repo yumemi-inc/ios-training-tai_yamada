@@ -5,8 +5,6 @@
 //  Created by 山田 大陽 on 2025/10/14.
 //
 
-import Observation
-
 import SwiftUI
 import Combine
 import YumemiWeather
