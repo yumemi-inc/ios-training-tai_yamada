@@ -22,8 +22,18 @@ struct WeatherView: View {
                     .aspectRatio(1, contentMode: .fit)
                     .foregroundStyle(imageColor(for: weather))
             } else {
-                ProgressView("天気を取得中...")
-                    .frame(maxHeight: .infinity)
+                ZStack {
+                     Color.gray.opacity(0.1)
+                        .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
+                        .aspectRatio(1, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                     
+                     Text("天気を取得中")
+                         .font(.headline)
+                         .foregroundStyle(.gray)
+                 }
+                 .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
+                 .aspectRatio(1, contentMode: .fit)
             }
             
             HStack(spacing: 0) {
