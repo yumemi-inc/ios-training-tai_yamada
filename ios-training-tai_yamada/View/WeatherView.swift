@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  WeatherView.swift
 //  ios-training-tai_yamada
 //
 //  Created by 山田 大陽 on 2025/10/14.
@@ -8,48 +8,58 @@
 import SwiftUI
 
 struct WeatherView: View {
-    @StateObject private var viewModel = WeatherViewModel()
+    @State private var viewModel = WeatherViewModel()
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                Image(viewModel.weather)
+        VStack(spacing: 0) {
+            
+            if let weather = viewModel.weather {
+                Image(weather.rawValue)
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: geometry.size.width * 0.5, height: geometry.size.width * 0.5)
-                    .foregroundStyle(imageColor)
-
-                HStack(spacing: 0) {
-                    Text("ー ー")
-                        .foregroundColor(.blue)
-                        .frame(width: geometry.size.width * 0.25)
-                    Text("ー ー")
-                        .foregroundColor(.red)
-                        .frame(width: geometry.size.width * 0.25)
-                }
-                
-                HStack(spacing: 0) {
-                    // TODO: Closeボタンの機能は今後のタスクで実装する
-                    Button(action: {}) {
-                        Text("Close")
-                            .foregroundColor(.blue)
-                            .frame(width: geometry.size.width * 0.25)
-                    }
-                    
-                    Button("Reload") {
-                        // 今回のタスクではパラメータを tokyo で固定にしています。
-                        viewModel.fetchWeather(for: "tokyo")
-                    }
-                    .foregroundColor(.blue)
-                    .frame(width: geometry.size.width * 0.25)
-                    
-                }
-                .padding(.top, 80)
-                
+                    .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
+                    .aspectRatio(1, contentMode: .fit)
+                    .foregroundStyle(imageColor(for: weather))
+            } else {
+                ZStack {
+                     Color.gray.opacity(0.1)
+                        .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
+                        .aspectRatio(1, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                     
+                     Text("天気を取得中")
+                         .font(.headline)
+                         .foregroundStyle(.gray)
+                 }
+                 .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
+                 .aspectRatio(1, contentMode: .fit)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            
+            HStack(spacing: 0) {
+                Text("ー ー")
+                    .foregroundColor(.blue)
+                    .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
+                Text("ー ー")
+                    .foregroundColor(.red)
+                    .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
+            }
+            
+            HStack(spacing: 0) {
+                // TODO: Closeボタンの機能は今後のタスクで実装する
+                Button("Close") {}
+                    .foregroundColor(.blue)
+                    .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
+                
+                Button("Reload") {
+                    viewModel.fetchWeather(for: "tokyo")
+                }
+                .foregroundColor(.blue)
+                .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
+            }
+            .padding(.top, 80)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .onAppear {
             // 今回のタスクではパラメータを tokyo で固定にしています。
             viewModel.fetchWeather(for: "tokyo")
@@ -64,15 +74,13 @@ struct WeatherView: View {
         }
     }
     
-    private var imageColor: Color {
-        switch viewModel.weather {
-        case "sunny": return .red
-        case "cloudy": return .gray
-        case "rainy": return .blue
-        default: return .black
+    private func imageColor(for weather: Weather) -> Color {
+        switch weather {
+        case .sunny: return .red
+        case .cloudy: return .gray
+        case .rainy: return .blue
         }
     }
-    
 }
 
 #Preview {
