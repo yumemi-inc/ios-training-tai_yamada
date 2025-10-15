@@ -9,39 +9,38 @@ import SwiftUI
 
 struct WeatherView: View {
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                Image(.dummy)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: geometry.size.width * 0.5, height: geometry.size.width * 0.5)
-
-                HStack(spacing: 0) {
-                    Text("ー ー")
-                        .foregroundColor(.blue)
-                        .frame(width: geometry.size.width * 0.25)
-                    Text("ー ー")
-                        .foregroundColor(.red)
-                        .frame(width: geometry.size.width * 0.25)
-                }
-                
-                HStack(spacing: 0) {
-                    // TODO: ボタンの機能は今後のタスクで実装する
-                    Button(action: {}) {
-                        Text("Close")
-                            .foregroundColor(.blue)
-                            .frame(width: geometry.size.width * 0.25)
-                    }
-                    Button(action: {}) {
-                        Text("Reload")
-                            .foregroundColor(.blue)
-                            .frame(width: geometry.size.width * 0.25)
-                    }
-                }
-                .padding(.top, 80)
+        VStack(spacing: 0) {
+            Image(.dummy)
+                .resizable()
+                .scaledToFit()
+                .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
+                .aspectRatio(1, contentMode: .fit)
+            
+            HStack(spacing: 0) {
+                Text("ー ー")
+                    .foregroundColor(.blue)
+                    .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
+                Text("ー ー")
+                    .foregroundColor(.red)
+                    .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            
+            HStack(spacing: 0) {
+                // TODO: ボタンの機能は今後のタスクで実装する
+                Button(action: {}) {
+                    Text("Close")
+                        .foregroundColor(.blue)
+                        .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
+                }
+                Button(action: {}) {
+                    Text("Reload")
+                        .foregroundColor(.blue)
+                        .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
+                }
+            }
+            .padding(.top, 80)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
 }
 
