@@ -13,13 +13,18 @@ struct WeatherView: View {
     var body: some View {
         VStack(spacing: 0) {
             
-            Image(viewModel.weather)
-                .renderingMode(.template)
-                .resizable()
-                .scaledToFit()
-                .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
-                .aspectRatio(1, contentMode: .fit)
-                .foregroundStyle(imageColor)
+            if let weather = viewModel.weather {
+                Image(weather.rawValue)
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
+                    .aspectRatio(1, contentMode: .fit)
+                    .foregroundStyle(imageColor(for: weather))
+            } else {
+                ProgressView("天気を取得中...")
+                    .frame(maxHeight: .infinity)
+            }
             
             HStack(spacing: 0) {
                 Text("ー ー")
@@ -50,12 +55,11 @@ struct WeatherView: View {
         }
     }
     
-    private var imageColor: Color {
-        switch viewModel.weather {
-        case "sunny": return .red
-        case "cloudy": return .gray
-        case "rainy": return .blue
-        default: return .black
+    private func imageColor(for weather: Weather) -> Color {
+        switch weather {
+        case .sunny: return .red
+        case .cloudy: return .gray
+        case .rainy: return .blue
         }
     }
 }

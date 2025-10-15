@@ -9,12 +9,13 @@ import SwiftUI
 import Combine
 import YumemiWeather
 
+@MainActor
 @Observable
 final class WeatherViewModel {
-    var weather: String = "sunny"
+    var weather: Weather?
     
     func fetchWeather() {
-        weather = YumemiWeather.fetchWeatherCondition()
-        print("取得した天気: \(weather)")
+        let condition = YumemiWeather.fetchWeatherCondition()
+        weather = Weather(rawValue: condition)
     }
 }
