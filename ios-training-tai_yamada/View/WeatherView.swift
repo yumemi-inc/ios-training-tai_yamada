@@ -18,7 +18,6 @@ struct WeatherView: View {
                     .resizable()
                     .scaledToFit()
                     .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
-                    .aspectRatio(1, contentMode: .fit)
                     .foregroundStyle(imageColor(for: weather))
             }
             
