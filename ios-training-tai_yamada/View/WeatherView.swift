@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WeatherView: View {
     @State private var viewModel = WeatherViewModel()
+    @State private var selectedArea = "tokyo"
     
     var body: some View {
         VStack(spacing: 0) {
@@ -38,7 +39,7 @@ struct WeatherView: View {
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
                 
                 Button("Reload") {
-                    viewModel.fetchWeather(for: "tokyo")
+                    viewModel.fetchWeather(for: selectedArea)
                 }
                 .foregroundColor(.blue)
                 .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
@@ -47,7 +48,7 @@ struct WeatherView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .onAppear {
-            viewModel.fetchWeather(for: "tokyo")
+            viewModel.fetchWeather(for: selectedArea)
         }
         .alert("エラー", isPresented: Binding(
             get: { viewModel.errorMessage != nil },
