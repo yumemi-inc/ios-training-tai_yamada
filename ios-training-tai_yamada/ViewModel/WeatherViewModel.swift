@@ -16,6 +16,6 @@ final class WeatherViewModel {
     
     func fetchWeather() {
         let condition = YumemiWeather.fetchWeatherCondition()
-        weather = Weather(rawValue: condition)
+        weather = Weather(rawValue: condition) ?? .unknown
     }
 }

@@ -68,6 +68,7 @@ struct WeatherView: View {
         case .sunny: return .red
         case .cloudy: return .gray
         case .rainy: return .blue
+        case .unknown: return .black
         }
     }
 }
