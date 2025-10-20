@@ -12,28 +12,14 @@ struct WeatherView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            
             if let weather = viewModel.weather {
-                Image(weather.rawValue)
+                weather.image
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
                     .aspectRatio(1, contentMode: .fit)
                     .foregroundStyle(imageColor(for: weather))
-            } else {
-                ZStack {
-                     Color.gray.opacity(0.1)
-                        .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
-                        .aspectRatio(1, contentMode: .fit)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                     
-                     Text("天気を取得中")
-                         .font(.headline)
-                         .foregroundStyle(.gray)
-                 }
-                 .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
-                 .aspectRatio(1, contentMode: .fit)
             }
             
             HStack(spacing: 0) {
@@ -78,6 +64,7 @@ struct WeatherView: View {
         case .sunny: return .red
         case .cloudy: return .gray
         case .rainy: return .blue
+        case .unknown: return .black
         }
     }
 }
