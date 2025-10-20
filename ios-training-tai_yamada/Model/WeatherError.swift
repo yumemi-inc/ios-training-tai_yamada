@@ -5,8 +5,28 @@
 //  Created by 山田 大陽 on 2025/10/20.
 //
 
-enum WeatherError: Error {
-    case invalidParameter
-    case unknown
-    case unexpected
+import Foundation
+
+struct WeatherError: LocalizedError {
+    let kind: Kind
+    let underlyingError: Error?
+
+    enum Kind {
+        case invalidParameter
+        case unknown
+        case unexpected
+    }
+
+    init(kind: Kind, underlyingError: Error? = nil) {
+        self.kind = kind
+        self.underlyingError = underlyingError
+    }
+
+    var errorDescription: String? {
+        switch kind {
+        case .invalidParameter: return "不正な地域名が指定されました。"
+        case .unknown: return "不明なエラーが発生しました。"
+        case .unexpected: return "予期せぬエラーが発生しました。"
+        }
+    }
 }

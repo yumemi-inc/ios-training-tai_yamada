@@ -66,24 +66,26 @@ struct WeatherView: View {
         .onAppear {
             viewModel.fetchWeather(for: selectedArea)
         }
-        .alert("エラー", isPresented: $viewModel.showErrorAlert) {
-            Button("OK", role: .cancel) {
-                viewModel.clearError()
-            }
-        } message: {
-            if case .failure(let error) = viewModel.state {
-                Text(localizedErrorMessage(for: error))
-            }
+        .alert("エラー", isPresented: isErrorPresented, presenting: currentError) { _ in
+            Button("OK", role: .cancel) {}
+        } message: { error in
+            Text(error.localizedDescription)
         }
-
     }
     
-    private func localizedErrorMessage(for error: WeatherError) -> String {
-        switch error {
-        case .invalidParameter: return "不正な地域名が指定されました。"
-        case .unknown: return "不明なエラーが発生しました。"
-        case .unexpected: return "予期せぬエラーが発生しました。"
-        }
+    private var isErrorPresented: Binding<Bool> {
+        Binding(
+            get: {
+                if case .failure = viewModel.state { true } else { false }
+            },
+            set: { _ in
+                viewModel.state = .idle
+            }
+        )
+    }
+
+    private var currentError: WeatherError? {
+        if case .failure(let error) = viewModel.state { error } else { nil }
     }
     
     private func imageColor(for weather: Weather) -> Color {
