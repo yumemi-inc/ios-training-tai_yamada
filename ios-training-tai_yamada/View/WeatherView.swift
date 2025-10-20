@@ -12,14 +12,12 @@ struct WeatherView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            
             if let weather = viewModel.weather {
-                Image(weather.rawValue)
+                weather.image
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
-                    .aspectRatio(1, contentMode: .fit)
                     .foregroundStyle(imageColor(for: weather))
             } else {
                 ZStack {
