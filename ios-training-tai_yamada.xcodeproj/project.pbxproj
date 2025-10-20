@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3DD854162E9E1F9C001A98C6 /* YumemiWeather in Frameworks */ = {isa = PBXBuildFile; productRef = 3DD854152E9E1F9C001A98C6 /* YumemiWeather */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		3DD853D92E9DFD68001A98C6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DD854162E9E1F9C001A98C6 /* YumemiWeather in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = "ios-training-tai_yamada";
 			packageProductDependencies = (
+				3DD854152E9E1F9C001A98C6 /* YumemiWeather */,
 			);
 			productName = "ios-training-tai_yamada";
 			productReference = 3DD853CB2E9DFD67001A98C6 /* ios-training-tai_yamada.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 3DD853C22E9DFD67001A98C6;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3DD854102E9E1A72001A98C6 /* XCRemoteSwiftPackageReference "ios-training" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3DD853CC2E9DFD67001A98C6 /* Products */;
 			projectDirPath = "";
@@ -417,13 +426,14 @@
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
@@ -460,13 +470,14 @@
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
@@ -613,6 +624,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3DD854102E9E1A72001A98C6 /* XCRemoteSwiftPackageReference "ios-training" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yumemi-inc/ios-training.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3DD854152E9E1F9C001A98C6 /* YumemiWeather */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3DD854102E9E1A72001A98C6 /* XCRemoteSwiftPackageReference "ios-training" */;
+			productName = YumemiWeather;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3DD853C32E9DFD67001A98C6 /* Project object */;
 }
