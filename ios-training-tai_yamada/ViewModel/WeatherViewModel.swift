@@ -12,25 +12,23 @@ import YumemiWeather
 @MainActor
 @Observable
 final class WeatherViewModel {
-    var weather: Weather?
-    var errorMessage: String?
+    var state: WeatherState = .idle
 
     func fetchWeather(for area: String) {
+        state = .loading
         do {
             let condition = try YumemiWeather.fetchWeatherCondition(at: area)
-            weather = Weather(rawValue: condition) ?? .unknown
-            errorMessage = nil
+            let weather = Weather(rawValue: condition) ?? .unknown
+            state = .success(weather)
         } catch let error as YumemiWeatherError {
-            weather = .unknown
             switch error {
             case .invalidParameterError:
-                errorMessage = "不正な地域名が指定されました。"
+                state = .failure("不正な地域名が指定されました。")
             case .unknownError:
-                errorMessage = "不明なエラーが発生しました。"
+                state = .failure("不明なエラーが発生しました。")
             }
         } catch {
-            weather = .unknown
-            errorMessage = "予期せぬエラーが発生しました。"
+            state = .failure("予期せぬエラーが発生しました。")
         }
     }
 }

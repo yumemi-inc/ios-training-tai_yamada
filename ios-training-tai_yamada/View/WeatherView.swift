@@ -13,14 +13,31 @@ struct WeatherView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if let weather = viewModel.weather {
-                weather.image
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
-                    .foregroundStyle(imageColor(for: weather))
+            ZStack {
+                Color.clear
+                    .aspectRatio(1, contentMode: .fit)
+                
+                switch viewModel.state {
+                case .idle, .loading:
+                    ProgressView()
+                        .tint(.gray)
+                        .aspectRatio(1, contentMode: .fit)
+
+                case .success(let weather):
+                    weather.image
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(imageColor(for: weather))
+
+                case .failure:
+                    Image(systemName: "questionmark.circle")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.gray)
+                }
             }
+            .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
             
             HStack(spacing: 0) {
                 Text("ー ー")
@@ -50,12 +67,16 @@ struct WeatherView: View {
             viewModel.fetchWeather(for: selectedArea)
         }
         .alert("エラー", isPresented: Binding(
-            get: { viewModel.errorMessage != nil },
-            set: { _ in viewModel.errorMessage = nil }
+            get: { if case .failure = viewModel.state { true } else { false } },
+            set: { _ in viewModel.state = .idle }
         )) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text(viewModel.errorMessage ?? "")
+            if case .failure(let message) = viewModel.state {
+                Text(message)
+            } else {
+                Text("")
+            }
         }
     }
     
