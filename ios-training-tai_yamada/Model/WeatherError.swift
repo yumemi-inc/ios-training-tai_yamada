@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WeatherError: LocalizedError {
+struct WeatherError: Error {
     let kind: Kind
     let underlyingError: Error?
 
@@ -21,12 +21,14 @@ struct WeatherError: LocalizedError {
         self.kind = kind
         self.underlyingError = underlyingError
     }
+}
 
+extension WeatherError: LocalizedError {
     var errorDescription: String? {
         switch kind {
         case .invalidParameter: return "不正な地域名が指定されました。"
-        case .unknown: return "不明なエラーが発生しました。"
-        case .unexpected: return "予期せぬエラーが発生しました。"
+        case .unknown:          return "不明なエラーが発生しました。"
+        case .unexpected:       return "予期せぬエラーが発生しました。"
         }
     }
 }
