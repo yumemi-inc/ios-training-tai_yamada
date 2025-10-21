@@ -22,4 +22,13 @@ enum Weather: String {
         case .unknown: return Image(systemName: "questionmark.circle")
         }
     }
+    
+    var color: Color {
+        switch self {
+        case .sunny: .red
+        case .cloudy: .gray
+        case .rainy: .blue
+        case .unknown: .black
+        }
+    }
 }

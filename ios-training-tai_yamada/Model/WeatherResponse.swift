@@ -8,9 +8,19 @@
 
 import Foundation
 
-struct WeatherResponse: Codable {
+struct WeatherResponse: Decodable {
     let maxTemperature: Int
     let minTemperature: Int
+    let date: String
     let weatherCondition: String
-    let date: Date
+}
+
+struct WeatherRequest: Encodable {
+    let area: String
+    let date: String
+
+    init(area: String) {
+        self.area = area
+        self.date = ISO8601DateFormatter().string(from: Date())
+    }
 }
