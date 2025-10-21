@@ -26,11 +26,8 @@ final class WeatherViewModel {
             let condition = try YumemiWeather.fetchWeatherCondition(at: area)
             let weather = Weather(rawValue: condition) ?? .unknown
             state = .success(weather)
-        } catch let error as YumemiWeatherError {
-            let weatherError = makeWeatherError(from: error)
-            state = .failure(weatherError)
         } catch {
-            state = .failure(WeatherError(kind: .unexpected, underlyingError: error))
+            state = .failure(makeWeatherError(from: error))
         }
     }
     
@@ -38,12 +35,16 @@ final class WeatherViewModel {
         state = .idle
     }
 
-    private func makeWeatherError(from error: YumemiWeatherError) -> WeatherError {
-        switch error {
-        case .invalidParameterError:
-            return WeatherError(kind: .invalidParameter, underlyingError: error)
-        case .unknownError:
-            return WeatherError(kind: .unknown, underlyingError: error)
+    private func makeWeatherError(from error: Error) -> WeatherError {
+        if let yumemiError = error as? YumemiWeatherError {
+            switch yumemiError {
+            case .invalidParameterError:
+                return WeatherError(kind: .invalidParameter, underlyingError: error)
+            case .unknownError:
+                return WeatherError(kind: .unknown, underlyingError: error)
+            }
+        } else {
+            return WeatherError(kind: .unexpected, underlyingError: error)
         }
     }
 }
