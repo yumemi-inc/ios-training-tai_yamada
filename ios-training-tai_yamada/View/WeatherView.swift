@@ -77,26 +77,15 @@ struct WeatherView: View {
         .onAppear {
             viewModel.fetchWeather(for: selectedArea)
         }
-        .alert("エラー", isPresented: isErrorPresented, presenting: currentError) { _ in
-            Button("OK", role: .cancel) {}
-        } message: { error in
-            Text(error.localizedDescription)
+        .alert(item: $viewModel.error) { err in
+            Alert(
+                title: Text("エラー"),
+                message: Text(err.localizedDescription),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.acknowledgeError()
+                }
+            )
         }
-    }
-    
-    private var isErrorPresented: Binding<Bool> {
-        Binding(
-            get: {
-                if case .failure = viewModel.state { true } else { false }
-            },
-            set: { _ in
-                viewModel.state = .idle
-            }
-        )
-    }
-
-    private var currentError: WeatherError? {
-        if case .failure(let error) = viewModel.state { error } else { nil }
     }
     
     private func imageColor(for weather: Weather) -> Color {

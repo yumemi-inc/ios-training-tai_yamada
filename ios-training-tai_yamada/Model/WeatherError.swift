@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct WeatherError: Error {
+struct WeatherError: Error, Identifiable {
+    let id = UUID()
     let kind: Kind
     let underlyingError: Error?
 
