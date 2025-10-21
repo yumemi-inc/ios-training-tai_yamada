@@ -27,9 +27,12 @@ struct WeatherError: Error, Identifiable {
 extension WeatherError: LocalizedError {
     var errorDescription: String? {
         switch kind {
-        case .invalidParameter: return "不正な地域名が指定されました。"
-        case .unknown:          return "不明なエラーが発生しました。"
-        case .unexpected:       return "予期せぬエラーが発生しました。"
+        case .invalidParameter:
+            return "地域情報を再選択して、もう一度お試しください。"
+        case .unknown:
+            return "通信状況をご確認のうえ、もう一度お試しください。"
+        case .unexpected:
+            return "アプリを再起動しても解決しない場合は、サポートにお問い合わせください。"
         }
     }
 }
