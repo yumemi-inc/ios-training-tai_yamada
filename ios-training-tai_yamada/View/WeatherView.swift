@@ -81,7 +81,7 @@ struct WeatherView: View {
                isPresented: .constant(viewModel.error != nil),
                actions: {
                    Button("OK", role: .cancel) {
-                       viewModel.acknowledgeError()
+                       viewModel.dismissError()
                    }
                },
                message: {

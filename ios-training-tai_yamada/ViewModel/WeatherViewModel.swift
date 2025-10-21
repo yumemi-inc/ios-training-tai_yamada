@@ -35,7 +35,7 @@ final class WeatherViewModel {
         }
     }
     
-    func acknowledgeError() {
+    func dismissError() {
         state = .idle
     }
 
