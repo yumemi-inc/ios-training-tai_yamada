@@ -18,7 +18,18 @@ struct WeatherView: View {
                     .aspectRatio(1, contentMode: .fit)
                 
                 switch viewModel.state {
-                case .idle, .loading:
+                case .idle:
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.2))
+                            .cornerRadius(15)
+                        
+                        Text("更新をお試しください")
+                            .foregroundStyle(.gray)
+                    }
+                    .aspectRatio(1, contentMode: .fit)
+                    
+                case .loading:
                     ProgressView()
                         .tint(.gray)
                         .aspectRatio(1, contentMode: .fit)
