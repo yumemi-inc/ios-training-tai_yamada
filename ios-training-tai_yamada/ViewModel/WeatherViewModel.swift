@@ -30,7 +30,6 @@ final class WeatherViewModel {
             let weatherError = makeWeatherError(from: error)
             state = .failure(weatherError)
         } catch {
-            let weatherError = WeatherError(kind: .unexpected, underlyingError: error)
             state = .failure(WeatherError(kind: .unexpected, underlyingError: error))
         }
     }
