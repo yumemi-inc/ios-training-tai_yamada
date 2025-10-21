@@ -13,7 +13,12 @@ import YumemiWeather
 @Observable
 final class WeatherViewModel {
     var state: WeatherState = .idle
-    var showErrorAlert = false
+    var error: WeatherError? {
+        if case .failure(let error) = state {
+            return error
+        }
+        return nil
+    }
 
     func fetchWeather(for area: String) {
         state = .loading
@@ -21,22 +26,25 @@ final class WeatherViewModel {
             let condition = try YumemiWeather.fetchWeatherCondition(at: area)
             let weather = Weather(rawValue: condition) ?? .unknown
             state = .success(weather)
-            showErrorAlert = false
-        } catch let error as YumemiWeatherError {
-            switch error {
-            case .invalidParameterError:
-                state = .failure(.invalidParameter)
-            case .unknownError:
-                state = .failure(.unknown)
-            }
-            showErrorAlert = true
         } catch {
-            state = .failure(.unexpected)
-            showErrorAlert = true
+            state = .failure(makeWeatherError(from: error))
         }
     }
     
-    func clearError() {
-        showErrorAlert = false
+    func dismissError() {
+        state = .idle
+    }
+
+    private func makeWeatherError(from error: Error) -> WeatherError {
+        if let yumemiError = error as? YumemiWeatherError {
+            switch yumemiError {
+            case .invalidParameterError:
+                return WeatherError(kind: .invalidParameter, underlyingError: error)
+            case .unknownError:
+                return WeatherError(kind: .unknown, underlyingError: error)
+            }
+        } else {
+            return WeatherError(kind: .unexpected, underlyingError: error)
+        }
     }
 }

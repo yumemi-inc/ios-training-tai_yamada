@@ -18,7 +18,18 @@ struct WeatherView: View {
                     .aspectRatio(1, contentMode: .fit)
                 
                 switch viewModel.state {
-                case .idle, .loading:
+                case .idle:
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.2))
+                            .cornerRadius(15)
+                        
+                        Text("更新をお試しください")
+                            .foregroundStyle(.gray)
+                    }
+                    .aspectRatio(1, contentMode: .fit)
+                    
+                case .loading:
                     ProgressView()
                         .tint(.gray)
                         .aspectRatio(1, contentMode: .fit)
@@ -66,24 +77,16 @@ struct WeatherView: View {
         .onAppear {
             viewModel.fetchWeather(for: selectedArea)
         }
-        .alert("エラー", isPresented: $viewModel.showErrorAlert) {
-            Button("OK", role: .cancel) {
-                viewModel.clearError()
-            }
-        } message: {
-            if case .failure(let error) = viewModel.state {
-                Text(localizedErrorMessage(for: error))
-            }
-        }
-
-    }
-    
-    private func localizedErrorMessage(for error: WeatherError) -> String {
-        switch error {
-        case .invalidParameter: return "不正な地域名が指定されました。"
-        case .unknown: return "不明なエラーが発生しました。"
-        case .unexpected: return "予期せぬエラーが発生しました。"
-        }
+        .alert("エラー",
+               isPresented: .constant(viewModel.error != nil),
+               actions: {
+                   Button("OK", role: .cancel) {
+                       viewModel.dismissError()
+                   }
+               },
+               message: {
+                   Text(viewModel.error?.localizedDescription ?? "")
+               })
     }
     
     private func imageColor(for weather: Weather) -> Color {
