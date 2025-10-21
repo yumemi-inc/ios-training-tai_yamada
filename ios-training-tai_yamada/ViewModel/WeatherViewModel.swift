@@ -23,9 +23,25 @@ final class WeatherViewModel {
     func fetchWeather(for area: String) {
         state = .loading
         do {
-            let condition = try YumemiWeather.fetchWeatherCondition(at: area)
-            let weather = Weather(rawValue: condition) ?? .unknown
-            state = .success(weather)
+            let request = WeatherRequest(area: area)
+
+            let encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            let requestString = try String(data: encoder.encode(request), encoding: .utf8)!
+            
+            let responseString = try YumemiWeather.fetchWeather(requestString)
+
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let response = try decoder.decode(WeatherResponse.self, from: Data(responseString.utf8))
+
+            let info = WeatherInfo(
+                condition: Weather(rawValue: response.weatherCondition) ?? .unknown,
+                minTemp: response.minTemperature,
+                maxTemp: response.maxTemperature
+            )
+            
+            state = .success(info)
         } catch {
             state = .failure(makeWeatherError(from: error))
         }

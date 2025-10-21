@@ -34,12 +34,12 @@ struct WeatherView: View {
                         .tint(.gray)
                         .aspectRatio(1, contentMode: .fit)
 
-                case .success(let weather):
-                    weather.image
+                case .success(let weatherInfo):
+                    weatherInfo.condition.image
                         .renderingMode(.template)
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(imageColor(for: weather))
+                        .foregroundStyle(weatherInfo.condition.color)
 
                 case .failure:
                     Image(systemName: "questionmark.circle")
@@ -51,11 +51,13 @@ struct WeatherView: View {
             .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
             
             HStack(spacing: 0) {
-                Text("ー ー")
+                Text(temperatureTexts.min)
                     .foregroundColor(.blue)
+                    .font(.system(size: 35, weight: .light))
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
-                Text("ー ー")
+                Text(temperatureTexts.max)
                     .foregroundColor(.red)
+                    .font(.system(size: 35, weight: .light))
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
             }
             
@@ -89,12 +91,12 @@ struct WeatherView: View {
                })
     }
     
-    private func imageColor(for weather: Weather) -> Color {
-        switch weather {
-        case .sunny: return .red
-        case .cloudy: return .gray
-        case .rainy: return .blue
-        case .unknown: return .black
+    private var temperatureTexts: (min: String, max: String) {
+        switch viewModel.state {
+        case .success(let info):
+            return ("\(info.minTemp)", "\(info.maxTemp)")
+        default:
+            return ("ー ー", "ー ー")
         }
     }
 }

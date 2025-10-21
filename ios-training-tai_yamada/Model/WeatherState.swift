@@ -8,6 +8,12 @@
 enum WeatherState {
     case idle
     case loading
-    case success(Weather)
+    case success(WeatherInfo)
     case failure(WeatherError)
+}
+
+struct WeatherInfo {
+    let condition: Weather
+    let minTemp: Int
+    let maxTemp: Int
 }
