@@ -77,15 +77,16 @@ struct WeatherView: View {
         .onAppear {
             viewModel.fetchWeather(for: selectedArea)
         }
-        .alert(item: $viewModel.error) { err in
-            Alert(
-                title: Text("エラー"),
-                message: Text(err.localizedDescription),
-                dismissButton: .default(Text("OK")) {
-                    viewModel.acknowledgeError()
-                }
-            )
-        }
+        .alert("エラー",
+               isPresented: .constant(viewModel.error != nil),
+               actions: {
+                   Button("OK", role: .cancel) {
+                       viewModel.acknowledgeError()
+                   }
+               },
+               message: {
+                   Text(viewModel.error?.localizedDescription ?? "")
+               })
     }
     
     private func imageColor(for weather: Weather) -> Color {
