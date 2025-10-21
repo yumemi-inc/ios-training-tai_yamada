@@ -9,30 +9,46 @@ import SwiftUI
 
 struct WeatherView: View {
     @State private var viewModel = WeatherViewModel()
+    @State private var selectedArea = "tokyo"
     
     var body: some View {
         VStack(spacing: 0) {
-            if let weather = viewModel.weather {
-                weather.image
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
-                    .foregroundStyle(imageColor(for: weather))
-            } else {
-                ZStack {
-                     Color.gray.opacity(0.1)
-                        .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
+            ZStack {
+                Color.clear
+                    .aspectRatio(1, contentMode: .fit)
+                
+                switch viewModel.state {
+                case .idle:
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.2))
+                            .cornerRadius(15)
+                        
+                        Text("更新をお試しください")
+                            .foregroundStyle(.gray)
+                    }
+                    .aspectRatio(1, contentMode: .fit)
+                    
+                case .loading:
+                    ProgressView()
+                        .tint(.gray)
                         .aspectRatio(1, contentMode: .fit)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                     
-                     Text("天気を取得中")
-                         .font(.headline)
-                         .foregroundStyle(.gray)
-                 }
-                 .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
-                 .aspectRatio(1, contentMode: .fit)
+
+                case .success(let weather):
+                    weather.image
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(imageColor(for: weather))
+
+                case .failure:
+                    Image(systemName: "questionmark.circle")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.gray)
+                }
             }
+            .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
             
             HStack(spacing: 0) {
                 Text("ー ー")
@@ -50,7 +66,7 @@ struct WeatherView: View {
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
                 
                 Button("Reload") {
-                    viewModel.fetchWeather()
+                    viewModel.fetchWeather(for: selectedArea)
                 }
                 .foregroundColor(.blue)
                 .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
@@ -59,8 +75,18 @@ struct WeatherView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .onAppear {
-            viewModel.fetchWeather()
+            viewModel.fetchWeather(for: selectedArea)
         }
+        .alert("エラー",
+               isPresented: .constant(viewModel.error != nil),
+               actions: {
+                   Button("OK", role: .cancel) {
+                       viewModel.dismissError()
+                   }
+               },
+               message: {
+                   Text(viewModel.error?.localizedDescription ?? "")
+               })
     }
     
     private func imageColor(for weather: Weather) -> Color {
