@@ -11,10 +11,3 @@ enum WeatherState {
     case success(WeatherInfo)
     case failure(WeatherError)
 }
-
-struct WeatherInfo {
-    let condition: Weather?
-    let minTemp: Int
-    let maxTemp: Int
-}
-
