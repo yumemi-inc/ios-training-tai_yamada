@@ -14,8 +14,3 @@ struct WeatherResponse: Decodable {
     let date: String
     let weatherCondition: String
 }
-
-struct WeatherRequest: Encodable {
-    let area: String
-    let date: Date
-}
