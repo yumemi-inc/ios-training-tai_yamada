@@ -13,14 +13,12 @@ import Combine
 final class WeatherViewModel {
     private let repository: WeatherRepository
     
-    init(repository: WeatherRepository = DefaultWeatherRepository(service: YumemiWeatherService())) {
+    init(repository: WeatherRepository = DefaultWeatherRepository()) {
         self.repository = repository
     }
     var state: WeatherState = .idle
-    var error: WeatherError? {
-        if case .failure(let error) = state {
-            return error
-        }
+    var error: Error? {
+        if case .failure(let err) = state { return err }
         return nil
     }
 
@@ -29,10 +27,8 @@ final class WeatherViewModel {
         do {
             let info = try repository.fetch(area: area, date: .now)
             state = .success(info)
-        } catch let weatherError as WeatherError {
-            state = .failure(weatherError)
         } catch {
-            state = .failure(WeatherError(kind: .unexpected, underlyingError: error))
+            state = .failure(error)
         }
     }
     

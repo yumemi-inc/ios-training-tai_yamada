@@ -14,20 +14,31 @@ protocol WeatherService {
 
 struct YumemiWeatherService: WeatherService {
     func fetch(area: String, date: Date) throws -> WeatherResponse {
-        let request = WeatherRequest(area: area, date: date)
+        do {
+            let request = WeatherRequest(area: area, date: date)
 
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        encoder.dateEncodingStrategy = .iso8601
-        let requestData = try encoder.encode(request)
-        let requestString = String(decoding: requestData, as: UTF8.self)
+            let encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            encoder.dateEncodingStrategy = .iso8601
+            let requestData = try encoder.encode(request)
+            let requestString = String(decoding: requestData, as: UTF8.self)
 
-        let responseString = try YumemiWeather.fetchWeather(requestString)
+            let responseString = try YumemiWeather.fetchWeather(requestString)
 
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        let response = try decoder.decode(WeatherResponse.self, from: Data(responseString.utf8))
-        return response
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let response = try decoder.decode(WeatherResponse.self, from: Data(responseString.utf8))
+            return response
+        } catch {
+            if let yumemiError = error as? YumemiWeatherError {
+                switch yumemiError {
+                case .invalidParameterError:
+                    throw WeatherServiceError.invalidParameter
+                case .unknownError:
+                    throw WeatherServiceError.unknown
+                }
+            }
+            throw WeatherServiceError.unexpected(error)
+        }
     }
 }
-

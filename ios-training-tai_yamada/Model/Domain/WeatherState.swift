@@ -9,5 +9,5 @@ enum WeatherState {
     case idle
     case loading
     case success(WeatherInfo)
-    case failure(WeatherError)
+    case failure(Error)
 }
