@@ -38,3 +38,4 @@ extension Weather? {
         map(\.color) ?? .black
     }
 }
+

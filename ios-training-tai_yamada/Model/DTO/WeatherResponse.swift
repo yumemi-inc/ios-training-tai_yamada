@@ -14,3 +14,4 @@ struct WeatherResponse: Decodable {
     let date: String
     let weatherCondition: String
 }
+

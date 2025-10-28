@@ -17,3 +17,4 @@ struct WeatherInfo {
     let minTemp: Int
     let maxTemp: Int
 }
+

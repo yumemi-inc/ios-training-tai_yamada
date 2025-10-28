@@ -11,3 +11,4 @@ struct WeatherRequest: Encodable {
     let area: String
     let date: Date
 }
+
