@@ -17,10 +17,5 @@ struct WeatherResponse: Decodable {
 
 struct WeatherRequest: Encodable {
     let area: String
-    let date: String
-
-    init(area: String) {
-        self.area = area
-        self.date = ISO8601DateFormatter().string(from: Date())
-    }
+    let date: Date
 }

@@ -23,10 +23,11 @@ final class WeatherViewModel {
     func fetchWeather(for area: String) {
         state = .loading
         do {
-            let request = WeatherRequest(area: area)
+            let request = WeatherRequest(area: area, date: .now)
 
             let encoder = JSONEncoder()
             encoder.keyEncodingStrategy = .convertToSnakeCase
+            encoder.dateEncodingStrategy = .iso8601
             let requestString = try String(data: encoder.encode(request), encoding: .utf8)!
             
             let responseString = try YumemiWeather.fetchWeather(requestString)
