@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import YumemiWeather
 
 struct DefaultWeatherRepository: WeatherRepository {
     private let service: WeatherService
@@ -29,15 +28,16 @@ struct DefaultWeatherRepository: WeatherRepository {
     }
 
     private func mapError(_ error: Error) -> WeatherError {
-        if let yumemiError = error as? YumemiWeatherError {
-            switch yumemiError {
-            case .invalidParameterError:
+        if let serviceError = error as? WeatherServiceError {
+            switch serviceError {
+            case .invalidParameter:
                 return WeatherError(kind: .invalidParameter, underlyingError: error)
-            case .unknownError:
+            case .unknown:
                 return WeatherError(kind: .unknown, underlyingError: error)
+            case .unexpected(let underlying):
+                return WeatherError(kind: .unexpected, underlyingError: underlying)
             }
         }
         return WeatherError(kind: .unexpected, underlyingError: error)
     }
 }
-
