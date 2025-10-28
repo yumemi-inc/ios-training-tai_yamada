@@ -36,3 +36,4 @@ extension WeatherError: LocalizedError {
         }
     }
 }
+

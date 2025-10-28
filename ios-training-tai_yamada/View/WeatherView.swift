@@ -34,12 +34,12 @@ struct WeatherView: View {
                         .tint(.gray)
                         .aspectRatio(1, contentMode: .fit)
 
-                case .success(let weather):
-                    weather.image
+                case .success(let weatherInfo):
+                    weatherInfo.condition.image
                         .renderingMode(.template)
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(imageColor(for: weather))
+                        .foregroundStyle(weatherInfo.condition.color)
 
                 case .failure:
                     Image(systemName: "questionmark.circle")
@@ -51,11 +51,13 @@ struct WeatherView: View {
             .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
             
             HStack(spacing: 0) {
-                Text("ー ー")
+                Text(minTempText)
                     .foregroundColor(.blue)
+                    .font(.system(size: 35, weight: .light))
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
-                Text("ー ー")
+                Text(maxTempText)
                     .foregroundColor(.red)
+                    .font(.system(size: 35, weight: .light))
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
             }
             
@@ -89,13 +91,18 @@ struct WeatherView: View {
                })
     }
     
-    private func imageColor(for weather: Weather) -> Color {
-        switch weather {
-        case .sunny: return .red
-        case .cloudy: return .gray
-        case .rainy: return .blue
-        case .unknown: return .black
+    private var minTempText: String {
+        if case .success(let info) = viewModel.state {
+            return "\(info.minTemp)"
         }
+        return "ー ー"
+    }
+
+    private var maxTempText: String {
+        if case .success(let info) = viewModel.state {
+            return "\(info.maxTemp)"
+        }
+        return "ー ー"
     }
 }
 

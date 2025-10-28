@@ -7,44 +7,32 @@
 
 import SwiftUI
 import Combine
-import YumemiWeather
 
 @MainActor
 @Observable
 final class WeatherViewModel {
+    private let repository: WeatherRepository
+    
+    init(repository: WeatherRepository = DefaultWeatherRepository()) {
+        self.repository = repository
+    }
     var state: WeatherState = .idle
-    var error: WeatherError? {
-        if case .failure(let error) = state {
-            return error
-        }
+    var error: Error? {
+        if case .failure(let err) = state { return err }
         return nil
     }
 
     func fetchWeather(for area: String) {
         state = .loading
         do {
-            let condition = try YumemiWeather.fetchWeatherCondition(at: area)
-            let weather = Weather(rawValue: condition) ?? .unknown
-            state = .success(weather)
+            let info = try repository.fetch(area: area, date: .now)
+            state = .success(info)
         } catch {
-            state = .failure(makeWeatherError(from: error))
+            state = .failure(error)
         }
     }
     
     func dismissError() {
         state = .idle
-    }
-
-    private func makeWeatherError(from error: Error) -> WeatherError {
-        if let yumemiError = error as? YumemiWeatherError {
-            switch yumemiError {
-            case .invalidParameterError:
-                return WeatherError(kind: .invalidParameter, underlyingError: error)
-            case .unknownError:
-                return WeatherError(kind: .unknown, underlyingError: error)
-            }
-        } else {
-            return WeatherError(kind: .unexpected, underlyingError: error)
-        }
     }
 }
