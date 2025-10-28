@@ -13,7 +13,7 @@ import Combine
 final class WeatherViewModel {
     private let repository: WeatherRepository
     
-    init(repository: WeatherRepository = DefaultWeatherRepository(service: YumemiWeatherService())) {
+    init(repository: WeatherRepository = DefaultWeatherRepository()) {
         self.repository = repository
     }
     var state: WeatherState = .idle
