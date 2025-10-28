@@ -33,12 +33,12 @@ struct YumemiWeatherService: WeatherService {
             if let yumemiError = error as? YumemiWeatherError {
                 switch yumemiError {
                 case .invalidParameterError:
-                    throw WeatherServiceError.invalidParameter
+                    throw WeatherError(kind: .invalidParameter, underlyingError: yumemiError)
                 case .unknownError:
-                    throw WeatherServiceError.unknown
+                    throw WeatherError(kind: .unknown, underlyingError: yumemiError)
                 }
             }
-            throw WeatherServiceError.unexpected(error)
+            throw WeatherError(kind: .unexpected, underlyingError: error)
         }
     }
 }
