@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WeatherView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var viewModel = WeatherViewModel()
     @State private var selectedArea = "tokyo"
     
@@ -63,7 +64,7 @@ struct WeatherView: View {
             
             HStack(spacing: 0) {
                 // TODO: Closeボタンの機能は今後のタスクで実装する
-                Button("Close") {}
+                Button("Close") { dismiss() }
                     .foregroundColor(.blue)
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
                 
@@ -76,6 +77,7 @@ struct WeatherView: View {
             .padding(.top, 80)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .navigationBarBackButtonHidden(true)
         .onAppear {
             viewModel.fetchWeather(for: selectedArea)
         }

@@ -11,7 +11,7 @@ import SwiftUI
 struct ios_training_tai_yamadaApp: App {
     var body: some Scene {
         WindowGroup {
-            WeatherView()
+            RootView()
         }
     }
 }
