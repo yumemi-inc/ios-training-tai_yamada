@@ -6,8 +6,7 @@
 //
 
 struct WeatherInfo {
-    let condition: Weather?
+    let condition: Weather
     let minTemp: Int
     let maxTemp: Int
 }
-
