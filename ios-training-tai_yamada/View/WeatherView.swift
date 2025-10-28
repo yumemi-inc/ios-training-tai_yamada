@@ -63,7 +63,6 @@ struct WeatherView: View {
             }
             
             HStack(spacing: 0) {
-                // TODO: Closeボタンの機能は今後のタスクで実装する
                 Button("Close") { dismiss() }
                     .foregroundColor(.blue)
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
