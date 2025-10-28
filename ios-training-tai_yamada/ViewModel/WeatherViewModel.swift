@@ -36,7 +36,7 @@ final class WeatherViewModel {
             let response = try decoder.decode(WeatherResponse.self, from: Data(responseString.utf8))
 
             let info = WeatherInfo(
-                condition: Weather(rawValue: response.weatherCondition) ?? .unknown,
+                condition: Weather(rawValue: response.weatherCondition),
                 minTemp: response.minTemperature,
                 maxTemp: response.maxTemperature
             )

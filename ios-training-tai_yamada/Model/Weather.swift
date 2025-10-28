@@ -12,14 +12,12 @@ enum Weather: String {
     case sunny
     case cloudy
     case rainy
-    case unknown
 
     var image: Image {
         switch self {
         case .sunny:  return Image(.sunny)
         case .cloudy: return Image(.cloudy)
         case .rainy:  return Image(.rainy)
-        case .unknown: return Image(systemName: "questionmark.circle")
         }
     }
     
@@ -28,7 +26,15 @@ enum Weather: String {
         case .sunny: .red
         case .cloudy: .gray
         case .rainy: .blue
-        case .unknown: .black
         }
+    }
+}
+
+extension Weather? {
+    var image: Image {
+        map(\.image) ?? Image(systemName: "questionmark")
+    }
+    var color: Color {
+        map(\.color) ?? .black
     }
 }
