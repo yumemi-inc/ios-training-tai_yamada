@@ -28,7 +28,8 @@ final class WeatherViewModel {
             let encoder = JSONEncoder()
             encoder.keyEncodingStrategy = .convertToSnakeCase
             encoder.dateEncodingStrategy = .iso8601
-            let requestString = try String(data: encoder.encode(request), encoding: .utf8)!
+            let requestData = try encoder.encode(request)
+            let requestString = String(decoding: requestData, as: UTF8.self)
             
             let responseString = try YumemiWeather.fetchWeather(requestString)
 
