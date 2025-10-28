@@ -11,16 +11,19 @@ struct RootView: View {
     @State private var showWeather = false
 
     var body: some View {
-        NavigationStack {
-            Color.black
-                .ignoresSafeArea()
-                .task {
-                    try? await Task.sleep(for: .seconds(0.5))
-                    showWeather = true
-                }
-                .navigationDestination(isPresented: $showWeather) {
-                    WeatherView()
-                }
-        }
+        Color.black
+            .ignoresSafeArea()
+            .onAppear {
+                showWeather = true
+            }
+            .fullScreenCover(isPresented: $showWeather) {
+                WeatherView()
+                    .onDisappear {
+                        Task { @MainActor in
+                            try? await Task.sleep(for: .seconds(0.5))
+                            showWeather = true
+                        }
+                    }
+            }
     }
 }
