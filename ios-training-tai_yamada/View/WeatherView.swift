@@ -51,11 +51,11 @@ struct WeatherView: View {
             .containerRelativeFrame(.horizontal, count: 2, spacing: 0)
             
             HStack(spacing: 0) {
-                Text(temperatureTexts.min)
+                Text(minTempText)
                     .foregroundColor(.blue)
                     .font(.system(size: 35, weight: .light))
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
-                Text(temperatureTexts.max)
+                Text(maxTempText)
                     .foregroundColor(.red)
                     .font(.system(size: 35, weight: .light))
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
@@ -91,13 +91,18 @@ struct WeatherView: View {
                })
     }
     
-    private var temperatureTexts: (min: String, max: String) {
-        switch viewModel.state {
-        case .success(let info):
-            return ("\(info.minTemp)", "\(info.maxTemp)")
-        default:
-            return ("ー ー", "ー ー")
+    private var minTempText: String {
+        if case .success(let info) = viewModel.state {
+            return "\(info.minTemp)"
         }
+        return "ー ー"
+    }
+
+    private var maxTempText: String {
+        if case .success(let info) = viewModel.state {
+            return "\(info.maxTemp)"
+        }
+        return "ー ー"
     }
 }
 
