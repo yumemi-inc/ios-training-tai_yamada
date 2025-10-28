@@ -7,11 +7,15 @@
 
 import SwiftUI
 import Combine
-import YumemiWeather
 
 @MainActor
 @Observable
 final class WeatherViewModel {
+    private let repository: WeatherRepository
+    
+    init(repository: WeatherRepository = DefaultWeatherRepository(service: YumemiWeatherService())) {
+        self.repository = repository
+    }
     var state: WeatherState = .idle
     var error: WeatherError? {
         if case .failure(let error) = state {
@@ -23,46 +27,16 @@ final class WeatherViewModel {
     func fetchWeather(for area: String) {
         state = .loading
         do {
-            let request = WeatherRequest(area: area, date: .now)
-
-            let encoder = JSONEncoder()
-            encoder.keyEncodingStrategy = .convertToSnakeCase
-            encoder.dateEncodingStrategy = .iso8601
-            let requestData = try encoder.encode(request)
-            let requestString = String(decoding: requestData, as: UTF8.self)
-            
-            let responseString = try YumemiWeather.fetchWeather(requestString)
-
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let response = try decoder.decode(WeatherResponse.self, from: Data(responseString.utf8))
-
-            let info = WeatherInfo(
-                condition: Weather(rawValue: response.weatherCondition),
-                minTemp: response.minTemperature,
-                maxTemp: response.maxTemperature
-            )
-            
+            let info = try repository.fetch(area: area, date: .now)
             state = .success(info)
+        } catch let weatherError as WeatherError {
+            state = .failure(weatherError)
         } catch {
-            state = .failure(makeWeatherError(from: error))
+            state = .failure(WeatherError(kind: .unexpected, underlyingError: error))
         }
     }
     
     func dismissError() {
         state = .idle
-    }
-
-    private func makeWeatherError(from error: Error) -> WeatherError {
-        if let yumemiError = error as? YumemiWeatherError {
-            switch yumemiError {
-            case .invalidParameterError:
-                return WeatherError(kind: .invalidParameter, underlyingError: error)
-            case .unknownError:
-                return WeatherError(kind: .unknown, underlyingError: error)
-            }
-        } else {
-            return WeatherError(kind: .unexpected, underlyingError: error)
-        }
     }
 }
