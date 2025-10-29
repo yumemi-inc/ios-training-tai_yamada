@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WeatherView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
     @State private var viewModel = WeatherViewModel()
     @State private var selectedArea = "tokyo"
     
@@ -78,6 +79,11 @@ struct WeatherView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .onAppear {
             viewModel.fetchWeather(for: selectedArea)
+        }
+        .task(id: scenePhase) {
+            if scenePhase == .active {
+                viewModel.fetchWeather(for: selectedArea)
+            }
         }
         .alert("エラー",
                isPresented: .constant(viewModel.error != nil),
