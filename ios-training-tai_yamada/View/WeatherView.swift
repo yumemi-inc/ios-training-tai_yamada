@@ -76,7 +76,6 @@ struct WeatherView: View {
             .padding(.top, 80)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        .navigationBarBackButtonHidden(true)
         .onAppear {
             viewModel.fetchWeather(for: selectedArea)
         }
