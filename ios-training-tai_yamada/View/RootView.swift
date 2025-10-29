@@ -16,14 +16,13 @@ struct RootView: View {
             .onAppear {
                 showWeather = true
             }
-            .fullScreenCover(isPresented: $showWeather) {
+            .fullScreenCover(isPresented: $showWeather, onDismiss: {
+                Task { @MainActor in
+                    try? await Task.sleep(for: .seconds(0.5))
+                    showWeather = true
+                }
+            }) {
                 WeatherView()
-                    .onDisappear {
-                        Task { @MainActor in
-                            try? await Task.sleep(for: .seconds(0.5))
-                            showWeather = true
-                        }
-                    }
             }
     }
 }
