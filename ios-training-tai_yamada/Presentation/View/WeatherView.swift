@@ -6,13 +6,22 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct WeatherView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
-    @State private var viewModel = WeatherViewModel()
+    @State private var viewModel: WeatherViewModel
     @State private var selectedArea = "tokyo"
-    
+
+    init(viewModel: WeatherViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
+
+    init() {
+        self.init(viewModel: Resolver.resolve())
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
@@ -42,6 +51,7 @@ struct WeatherView: View {
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(weatherInfo.condition.color)
+                        .accessibilityIdentifier("weatherIcon_\(weatherInfo.condition.rawValue)")
 
                 case .failure:
                     Image(systemName: "questionmark.circle")
@@ -57,10 +67,12 @@ struct WeatherView: View {
                     .foregroundColor(.blue)
                     .font(.system(size: 35, weight: .light))
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
+                    .accessibilityIdentifier("minTempLabel")
                 Text(maxTempText)
                     .foregroundColor(.red)
                     .font(.system(size: 35, weight: .light))
                     .containerRelativeFrame(.horizontal, count: 4, spacing: 0)
+                    .accessibilityIdentifier("maxTempLabel")
             }
             
             HStack(spacing: 0) {

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3DD854162E9E1F9C001A98C6 /* YumemiWeather in Frameworks */ = {isa = PBXBuildFile; productRef = 3DD854152E9E1F9C001A98C6 /* YumemiWeather */; };
+		E5765DA82EB1B6DD0090F4FA /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = E5765DA72EB1B6DD0090F4FA /* Resolver */; };
+		E5765DAD2EB1BA490090F4FA /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = E5765DAC2EB1BA490090F4FA /* Resolver */; };
+		E5765DAF2EB1BA5B0090F4FA /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = E5765DAE2EB1BA5B0090F4FA /* Resolver */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5765DA82EB1B6DD0090F4FA /* Resolver in Frameworks */,
 				3DD854162E9E1F9C001A98C6 /* YumemiWeather in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5765DAD2EB1BA490090F4FA /* Resolver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5765DAF2EB1BA5B0090F4FA /* Resolver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +124,7 @@
 			name = "ios-training-tai_yamada";
 			packageProductDependencies = (
 				3DD854152E9E1F9C001A98C6 /* YumemiWeather */,
+				E5765DA72EB1B6DD0090F4FA /* Resolver */,
 			);
 			productName = "ios-training-tai_yamada";
 			productReference = 3DD853CB2E9DFD67001A98C6 /* ios-training-tai_yamada.app */;
@@ -141,6 +148,7 @@
 			);
 			name = "ios-training-tai_yamadaTests";
 			packageProductDependencies = (
+				E5765DAC2EB1BA490090F4FA /* Resolver */,
 			);
 			productName = "ios-training-tai_yamadaTests";
 			productReference = 3DD853D82E9DFD68001A98C6 /* ios-training-tai_yamadaTests.xctest */;
@@ -164,6 +172,7 @@
 			);
 			name = "ios-training-tai_yamadaUITests";
 			packageProductDependencies = (
+				E5765DAE2EB1BA5B0090F4FA /* Resolver */,
 			);
 			productName = "ios-training-tai_yamadaUITests";
 			productReference = 3DD853E22E9DFD68001A98C6 /* ios-training-tai_yamadaUITests.xctest */;
@@ -203,6 +212,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				3DD854102E9E1A72001A98C6 /* XCRemoteSwiftPackageReference "ios-training" */,
+				E5765DA62EB1B68C0090F4FA /* XCRemoteSwiftPackageReference "Resolver" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3DD853CC2E9DFD67001A98C6 /* Products */;
@@ -634,6 +644,14 @@
 				kind = branch;
 			};
 		};
+		E5765DA62EB1B68C0090F4FA /* XCRemoteSwiftPackageReference "Resolver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Resolver";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -641,6 +659,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3DD854102E9E1A72001A98C6 /* XCRemoteSwiftPackageReference "ios-training" */;
 			productName = YumemiWeather;
+		};
+		E5765DA72EB1B6DD0090F4FA /* Resolver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5765DA62EB1B68C0090F4FA /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = Resolver;
+		};
+		E5765DAC2EB1BA490090F4FA /* Resolver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5765DA62EB1B68C0090F4FA /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = Resolver;
+		};
+		E5765DAE2EB1BA5B0090F4FA /* Resolver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5765DA62EB1B68C0090F4FA /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = Resolver;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
