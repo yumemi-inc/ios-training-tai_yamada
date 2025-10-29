@@ -33,9 +33,13 @@ final class ios_training_tai_yamadaUITests: XCTestCase {
 
     @MainActor
     func testLaunchPerformance() throws {
+        #if DEBUG
+        throw XCTSkip("Skipping launch performance test in debug build for faster iteration.")
+        #else
         // This measures how long it takes to launch your application.
         measure(metrics: [XCTApplicationLaunchMetric()]) {
             XCUIApplication().launch()
         }
+        #endif
     }
 }
