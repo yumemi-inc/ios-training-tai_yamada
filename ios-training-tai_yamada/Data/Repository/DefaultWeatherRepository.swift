@@ -10,9 +10,6 @@ import Foundation
 struct DefaultWeatherRepository: WeatherRepository {
     private let service: WeatherService
 
-    init(service: WeatherService = YumemiWeatherService()) {
-        self.service = service
-    }
 
     func fetch(area: String, date: Date) throws -> WeatherInfo {
         let response = try service.fetch(area: area, date: date)
