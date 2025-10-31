@@ -12,8 +12,15 @@ import XCTest
 final class WeatherViewModelTests: XCTestCase {
     func testFetchWeather_setsSuccessState() {
         let vm = WeatherViewModel(useCase: StubFetchWeatherUseCase(condition: .cloudy, min: 5, max: 15))
-        XCTAssertEqual(String(describing: vm.state), String(describing: WeatherState.idle))
+                
+        if case .idle = vm.state {
+            // idle状態のテストOK
+        } else {
+            XCTFail("Expected idle state")
+        }
+
         vm.fetchWeather(for: "tokyo")
+        
         if case .success(let info) = vm.state {
             XCTAssertEqual(info.condition, .cloudy)
             XCTAssertEqual(info.minTemp, 5)
