@@ -10,7 +10,7 @@ import Foundation
 struct DefaultWeatherRepository: WeatherRepository {
     private let service: WeatherService
 
-    init(service: WeatherService = YumemiWeatherService()) {
+    init(service: WeatherService) {
         self.service = service
     }
 
