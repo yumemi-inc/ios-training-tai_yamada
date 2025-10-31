@@ -29,5 +29,23 @@ final class WeatherViewModelTests: XCTestCase {
             XCTFail("Expected success state")
         }
     }
+    
+    func testFetchWeather_setsFailureState_whenUseCaseThrowsWeatherError() {
+        
+        struct FailingUseCase: FetchWeatherUseCase {
+            func execute(area: String, date: Date) throws -> WeatherInfo {
+                throw WeatherError(kind: .unexpected)
+            }
+        }
+        let vm = WeatherViewModel(useCase: FailingUseCase())
+
+        vm.fetchWeather(for: "tokyo")
+
+        if case .failure(let error as WeatherError) = vm.state {
+            XCTAssertEqual(error.kind, .unexpected, "Expected WeatherError.kind = .unexpected")
+        } else {
+            XCTFail("Expected failure state with WeatherError(.unexpected)")
+        }
+    }
 }
 
