@@ -1,5 +1,5 @@
 {
-  "originHash" : "b7c241b612771a28f40ae6f3ba3674a0d727629f0a6f7943a56f054566e8ec5f",
+  "originHash" : "28fc524b874e49a95ed715342bf8bc3644a703ff0401663fc88ac24bf07b7631",
   "pins" : [
     {
       "identity" : "ios-training",
@@ -8,6 +8,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "01e163e60f780b7ff37f9306a65a8494295f5cbf"
+      }
+    },
+    {
+      "identity" : "resolver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hmlongco/Resolver",
+      "state" : {
+        "revision" : "47602af1ac8d7952299fbd0bda3cfbd12cf3a8ca",
+        "version" : "1.5.1"
       }
     }
   ],

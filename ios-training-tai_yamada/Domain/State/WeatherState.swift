@@ -11,3 +11,4 @@ enum WeatherState {
     case success(WeatherInfo)
     case failure(Error)
 }
+

@@ -11,10 +11,10 @@ import Combine
 @MainActor
 @Observable
 final class WeatherViewModel {
-    private let repository: WeatherRepository
-    
-    init(repository: WeatherRepository = DefaultWeatherRepository()) {
-        self.repository = repository
+    private let fetchWeather: FetchWeatherUseCase
+
+    init(useCase: FetchWeatherUseCase) {
+        self.fetchWeather = useCase
     }
     var state: WeatherState = .idle
     var error: Error? {
@@ -25,7 +25,7 @@ final class WeatherViewModel {
     func fetchWeather(for area: String) {
         state = .loading
         do {
-            let info = try repository.fetch(area: area, date: .now)
+            let info = try fetchWeather.execute(area: area, date: .now)
             state = .success(info)
         } catch {
             state = .failure(error)
