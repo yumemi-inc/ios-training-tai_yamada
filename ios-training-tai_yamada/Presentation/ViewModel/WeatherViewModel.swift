@@ -24,12 +24,16 @@ final class WeatherViewModel {
 
     func fetchWeather(for area: String) {
         state = .loading
-        Task(priority: .userInitiated) {
+        Task.detached(priority: .userInitiated) {
             do {
-                let info = try fetchWeather.execute(area: area, date: .now)
-                state = .success(info)
+                let info = try self.fetchWeather.execute(area: area, date: .now)
+                await MainActor.run {
+                    self.state = .success(info)
+                }
             } catch {
-                state = .failure(error)
+                await MainActor.run {
+                    self.state = .failure(error)
+                }
             }
         }
     }
