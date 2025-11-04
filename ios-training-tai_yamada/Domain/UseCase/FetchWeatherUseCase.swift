@@ -4,8 +4,8 @@
 //
 //  Created by 山田大陽 on 2025/10/29.
 //
-// Delegate 駆動版 (`FetchWeatherUseCaseDelegateDriven`) と併存しています。
-// 今後のタスク再利用予定
+// Delegate 駆動版 (FetchWeatherUseCaseDelegateDriven) と併存しています。
+// 今後のタスクで再利用予定
 
 import Foundation
 
