@@ -11,6 +11,7 @@ import Resolver
 enum DomainAssembly {
     static func register() {
         Resolver.register { DefaultFetchWeatherUseCase(repository: Resolver.resolve()) as FetchWeatherUseCase }
+        Resolver.register { DefaultFetchWeatherUseCaseDelegateDriven(repository: Resolver.resolve()) as FetchWeatherUseCaseDelegateDriven }
     }
 }
 
