@@ -17,7 +17,6 @@ protocol FetchWeatherUseCaseDelegateDriven {
     func execute(area: String, date: Date)
 }
 
-
 final class DefaultFetchWeatherUseCaseDelegateDriven: FetchWeatherUseCaseDelegateDriven {
     weak var delegate: FetchWeatherUseCaseDelegate?
 
@@ -28,19 +27,17 @@ final class DefaultFetchWeatherUseCaseDelegateDriven: FetchWeatherUseCaseDelegat
     }
 
     func execute(area: String, date: Date) {
-        Task.detached(priority: .userInitiated) { [weak self] in
-            guard let self else { return }
+        Task.detached(priority: .userInitiated) {
             do {
                 let info = try self.repository.fetch(area: area, date: date)
-                await MainActor.run { [weak self] in
-                    self?.delegate?.fetchWeatherDidSucceed(info: info)
+                await MainActor.run {
+                    self.delegate?.fetchWeatherDidSucceed(info: info)
                 }
             } catch {
-                await MainActor.run { [weak self] in
-                    self?.delegate?.fetchWeatherDidFail(error: error)
+                await MainActor.run {
+                    self.delegate?.fetchWeatherDidFail(error: error)
                 }
             }
         }
     }
 }
-
