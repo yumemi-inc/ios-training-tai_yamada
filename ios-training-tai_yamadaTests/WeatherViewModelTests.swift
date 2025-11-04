@@ -10,7 +10,7 @@ import XCTest
 
 @MainActor
 final class WeatherViewModelTests: XCTestCase {
-    func testFetchWeather_setsSuccessState() {
+    func testFetchWeather_setsSuccessState() async throws {
         let vm = WeatherViewModel(useCase: StubFetchWeatherUseCase(condition: .cloudy, min: 5, max: 15))
                 
         if case .idle = vm.state {
@@ -20,7 +20,9 @@ final class WeatherViewModelTests: XCTestCase {
         }
 
         vm.fetchWeather(for: "tokyo")
-        
+
+        try await Task.sleep(nanoseconds: 50_000_000)
+
         if case .success(let info) = vm.state {
             XCTAssertEqual(info.condition, .cloudy)
             XCTAssertEqual(info.minTemp, 5)
@@ -30,7 +32,7 @@ final class WeatherViewModelTests: XCTestCase {
         }
     }
     
-    func testFetchWeather_setsFailureState_whenUseCaseThrowsWeatherError() {
+    func testFetchWeather_setsFailureState_whenUseCaseThrowsWeatherError() async throws {
         
         struct FailingUseCase: FetchWeatherUseCase {
             func execute(area: String, date: Date) throws -> WeatherInfo {
@@ -40,6 +42,8 @@ final class WeatherViewModelTests: XCTestCase {
         let vm = WeatherViewModel(useCase: FailingUseCase())
 
         vm.fetchWeather(for: "tokyo")
+
+        try await Task.sleep(nanoseconds: 50_000_000)
 
         if case .failure(let error as WeatherError) = vm.state {
             XCTAssertEqual(error.kind, .unexpected, "Expected WeatherError.kind = .unexpected")

@@ -23,7 +23,7 @@ struct YumemiWeatherService: WeatherService {
             let requestData = try encoder.encode(request)
             let requestString = String(decoding: requestData, as: UTF8.self)
 
-            let responseString = try YumemiWeather.fetchWeather(requestString)
+            let responseString = try YumemiWeather.syncFetchWeather(requestString)
 
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
