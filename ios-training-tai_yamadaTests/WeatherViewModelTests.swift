@@ -12,6 +12,7 @@ import XCTest
 final class WeatherViewModelTests: XCTestCase {
     func testFetchWeather_setsSuccessState() async throws {
         let vm = WeatherViewModel(useCase: StubFetchWeatherUseCase(condition: .cloudy, min: 5, max: 15))
+        let exp = expectation(description: "wait for success")
                 
         if case .idle = vm.state {
             // idle状態のテストOK
@@ -21,7 +22,12 @@ final class WeatherViewModelTests: XCTestCase {
 
         vm.fetchWeather(for: "tokyo")
 
-        try await Task.sleep(nanoseconds: 50_000_000)
+        DispatchQueue.main.async {
+            if case .success = vm.state {
+                exp.fulfill()
+            }
+        }
+        await fulfillment(of: [exp], timeout: 1.0)
 
         if case .success(let info) = vm.state {
             XCTAssertEqual(info.condition, .cloudy)
@@ -40,10 +46,16 @@ final class WeatherViewModelTests: XCTestCase {
             }
         }
         let vm = WeatherViewModel(useCase: FailingUseCase())
+        let exp = expectation(description: "wait for success")
 
         vm.fetchWeather(for: "tokyo")
 
-        try await Task.sleep(nanoseconds: 50_000_000)
+        DispatchQueue.main.async {
+            if case .failure = vm.state {
+                exp.fulfill()
+            }
+        }
+        await fulfillment(of: [exp], timeout: 1.0)
 
         if case .failure(let error as WeatherError) = vm.state {
             XCTAssertEqual(error.kind, .unexpected, "Expected WeatherError.kind = .unexpected")
