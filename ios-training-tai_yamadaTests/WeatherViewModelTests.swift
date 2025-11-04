@@ -22,10 +22,11 @@ final class WeatherViewModelTests: XCTestCase {
 
         vm.fetchWeather(for: "tokyo")
 
-        DispatchQueue.main.async {
-            if case .success = vm.state {
-                exp.fulfill()
+        Task {
+            while case .loading = vm.state {
+                try? await Task.sleep(nanoseconds: 10_000_000)
             }
+            exp.fulfill()
         }
         await fulfillment(of: [exp], timeout: 1.0)
 
@@ -50,10 +51,11 @@ final class WeatherViewModelTests: XCTestCase {
 
         vm.fetchWeather(for: "tokyo")
 
-        DispatchQueue.main.async {
-            if case .failure = vm.state {
-                exp.fulfill()
+        Task {
+            while case .loading = vm.state {
+                try? await Task.sleep(nanoseconds: 10_000_000)
             }
+            exp.fulfill()
         }
         await fulfillment(of: [exp], timeout: 1.0)
 
