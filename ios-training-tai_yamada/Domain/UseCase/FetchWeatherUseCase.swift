@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// @mockable
 protocol FetchWeatherUseCase {
     func execute(area: String, date: Date) throws -> WeatherInfo
 }

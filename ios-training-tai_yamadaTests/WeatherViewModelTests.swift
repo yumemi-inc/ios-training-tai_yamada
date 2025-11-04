@@ -11,24 +11,26 @@ import XCTest
 @MainActor
 final class WeatherViewModelTests: XCTestCase {
     func testFetchWeather_setsSuccessState() async throws {
-        let vm = WeatherViewModel(useCase: StubFetchWeatherUseCase(condition: .cloudy, min: 5, max: 15))
-        let exp = expectation(description: "wait for success")
-                
+        let mock = FetchWeatherUseCaseMock()
+        let vm = WeatherViewModel(useCase: mock)
+        let exp = expectation(description: "UseCase execute called")
+
         if case .idle = vm.state {
             // idle状態のテストOK
         } else {
             XCTFail("Expected idle state")
         }
 
-        vm.fetchWeather(for: "tokyo")
-
-        Task {
-            while case .loading = vm.state {
-                try? await Task.sleep(nanoseconds: 10_000_000)
-            }
+        mock.executeHandler = { area, date in
+            XCTAssertEqual(area, "tokyo")
             exp.fulfill()
+            return WeatherInfo(condition: .cloudy, minTemp: 5, maxTemp: 15)
         }
+
+        vm.fetchWeather(for: "tokyo")
         await fulfillment(of: [exp], timeout: 1.0)
+        
+        await Task.yield(); await Task.yield()
 
         if case .success(let info) = vm.state {
             XCTAssertEqual(info.condition, .cloudy)
@@ -40,24 +42,19 @@ final class WeatherViewModelTests: XCTestCase {
     }
     
     func testFetchWeather_setsFailureState_whenUseCaseThrowsWeatherError() async throws {
-        
-        struct FailingUseCase: FetchWeatherUseCase {
-            func execute(area: String, date: Date) throws -> WeatherInfo {
-                throw WeatherError(kind: .unexpected)
-            }
+        let mock = FetchWeatherUseCaseMock()
+        let vm = WeatherViewModel(useCase: mock)
+        let exp = expectation(description: "UseCase execute called")
+
+        mock.executeHandler = { _, _ in
+            exp.fulfill()
+            throw WeatherError(kind: .unexpected)
         }
-        let vm = WeatherViewModel(useCase: FailingUseCase())
-        let exp = expectation(description: "wait for success")
 
         vm.fetchWeather(for: "tokyo")
-
-        Task {
-            while case .loading = vm.state {
-                try? await Task.sleep(nanoseconds: 10_000_000)
-            }
-            exp.fulfill()
-        }
         await fulfillment(of: [exp], timeout: 1.0)
+        
+        await Task.yield(); await Task.yield()
 
         if case .failure(let error as WeatherError) = vm.state {
             XCTAssertEqual(error.kind, .unexpected, "Expected WeatherError.kind = .unexpected")
@@ -66,4 +63,3 @@ final class WeatherViewModelTests: XCTestCase {
         }
     }
 }
-
