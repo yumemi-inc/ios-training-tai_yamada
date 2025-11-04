@@ -12,7 +12,7 @@ enum PresentationAssembly {
     static func register() {
         Resolver.register {
             MainActor.assumeIsolated {
-                WeatherViewModel(delegateUseCase: Resolver.resolve())
+                WeatherViewModel(useCase: Resolver.resolve())
             }
         }
     }
