@@ -10,7 +10,7 @@ import Foundation
 @testable import ios_training_tai_yamada
 
 final class FetchWeatherUseCaseMock: FetchWeatherUseCase {
-    var executeHandler: ((String, Date) throws -> WeatherInfo)?
+    var executeHandler: ((_ area: String, _ date: Date) throws -> WeatherInfo)?
 
     func execute(area: String, date: Date) throws -> WeatherInfo {
         if let handler = executeHandler {
