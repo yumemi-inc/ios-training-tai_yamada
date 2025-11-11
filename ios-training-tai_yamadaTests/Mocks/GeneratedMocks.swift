@@ -10,13 +10,14 @@ import Foundation
 @testable import ios_training_tai_yamada
 
 final class FetchWeatherUseCaseMock: FetchWeatherUseCase {
-    var executeHandler: ((_ area: String, _ date: Date) throws -> WeatherInfo)?
+    private let executeHandler: (_ area: String, _ date: Date) throws -> WeatherInfo
+
+    init(executeHandler: @escaping (_ area: String, _ date: Date) throws -> WeatherInfo) {
+        self.executeHandler = executeHandler
+    }
 
     func execute(area: String, date: Date) throws -> WeatherInfo {
-        if let handler = executeHandler {
-            return try handler(area, date)
-        }
-        fatalError("executeHandler not set")
+        try executeHandler(area, date)
     }
 }
 
