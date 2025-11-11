@@ -7,8 +7,9 @@
 
 import Foundation
 
+/// @mockable
 protocol FetchWeatherUseCase {
-    func execute(area: String, date: Date) throws -> WeatherInfo
+    func execute(area: String, date: Date) async throws -> WeatherInfo
 }
 
 struct DefaultFetchWeatherUseCase: FetchWeatherUseCase {
@@ -18,8 +19,7 @@ struct DefaultFetchWeatherUseCase: FetchWeatherUseCase {
         self.repository = repository
     }
 
-    func execute(area: String, date: Date) throws -> WeatherInfo {
-        try repository.fetch(area: area, date: date)
+    func execute(area: String, date: Date) async throws -> WeatherInfo {
+        try await repository.fetch(area: area, date: date)
     }
 }
-

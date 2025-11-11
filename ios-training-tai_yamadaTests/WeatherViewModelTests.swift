@@ -10,9 +10,17 @@ import XCTest
 
 @MainActor
 final class WeatherViewModelTests: XCTestCase {
-    func testFetchWeather_setsSuccessState() {
-        let vm = WeatherViewModel(useCase: StubFetchWeatherUseCase(condition: .cloudy, min: 5, max: 15))
-                
+    func testFetchWeather_setsSuccessState() async throws {
+        let exp = expectation(description: "UseCase execute called")
+
+        let mock = FetchWeatherUseCaseMock { area, date in
+            XCTAssertEqual(area, "tokyo")
+            exp.fulfill()
+            return WeatherInfo(condition: .cloudy, minTemp: 5, maxTemp: 15)
+        }
+
+        let vm = WeatherViewModel(useCase: mock)
+
         if case .idle = vm.state {
             // idle状態のテストOK
         } else {
@@ -20,7 +28,8 @@ final class WeatherViewModelTests: XCTestCase {
         }
 
         vm.fetchWeather(for: "tokyo")
-        
+        await fulfillment(of: [exp], timeout: 1.0)
+
         if case .success(let info) = vm.state {
             XCTAssertEqual(info.condition, .cloudy)
             XCTAssertEqual(info.minTemp, 5)
@@ -29,17 +38,18 @@ final class WeatherViewModelTests: XCTestCase {
             XCTFail("Expected success state")
         }
     }
-    
-    func testFetchWeather_setsFailureState_whenUseCaseThrowsWeatherError() {
-        
-        struct FailingUseCase: FetchWeatherUseCase {
-            func execute(area: String, date: Date) throws -> WeatherInfo {
-                throw WeatherError(kind: .unexpected)
-            }
-        }
-        let vm = WeatherViewModel(useCase: FailingUseCase())
 
+    func testFetchWeather_setsFailureState_whenUseCaseThrowsWeatherError() async throws {
+        let exp = expectation(description: "UseCase execute called")
+
+        let mock = FetchWeatherUseCaseMock { _, _ in
+            exp.fulfill()
+            throw WeatherError(kind: .unexpected)
+        }
+
+        let vm = WeatherViewModel(useCase: mock)
         vm.fetchWeather(for: "tokyo")
+        await fulfillment(of: [exp], timeout: 1.0)
 
         if case .failure(let error as WeatherError) = vm.state {
             XCTAssertEqual(error.kind, .unexpected, "Expected WeatherError.kind = .unexpected")
@@ -48,4 +58,3 @@ final class WeatherViewModelTests: XCTestCase {
         }
     }
 }
-
