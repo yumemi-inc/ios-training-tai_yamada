@@ -12,7 +12,10 @@ enum PresentationAssembly {
     static func register() {
         Resolver.register {
             MainActor.assumeIsolated {
-                WeatherViewModel(useCase: Resolver.resolve())
+                // NOTE: Delegateパターン学習用の構成。
+                //       同期版(useCase:)も残してあり、用途に応じて切り替え可能。
+//                WeatherViewModel(useCase: Resolver.resolve())
+                WeatherViewModelDelegateDriven(delegateUseCase: Resolver.resolve())
             }
         }
     }

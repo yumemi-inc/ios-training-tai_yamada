@@ -11,10 +11,10 @@ import Resolver
 struct WeatherView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
-    @State private var viewModel: WeatherViewModel
+    @State private var viewModel: WeatherViewModelDelegateDriven
     @State private var selectedArea = "tokyo"
 
-    init(viewModel: WeatherViewModel) {
+    init(viewModel: WeatherViewModelDelegateDriven) {
         _viewModel = State(initialValue: viewModel)
     }
 
